@@ -63,6 +63,35 @@ namespace Microsoft.OneDrive.Sdk
         /// <param name="clientSecret">The client secret for Microsoft Account authentication.</param>
         /// <param name="credentialCache">The cache instance for storing user credentials.</param>
         /// <param name="httpProvider">The <see cref="IHttpProvider"/> for sending HTTP requests.</param>
+        /// <param name="webAuthenticationUi">The <see cref="IWebAuthenticationUi"/> for displaying authentication UI to the user.</param>
+        /// <returns>The <see cref="IOneDriveClient"/> for the session.</returns>
+        public static IOneDriveClient GetMicrosoftAccountClient(
+            string appId,
+            string returnUrl,
+            string[] scopes,
+            string clientSecret, 
+            CredentialCache credentialCache = null,
+            IHttpProvider httpProvider = null,
+            IWebAuthenticationUi webAuthenticationUi = null)
+        {
+            return OneDriveClient.GetMicrosoftAccountClient(
+                appId,
+                returnUrl,
+                scopes,
+                clientSecret,
+                credentialCache,
+                httpProvider,
+                new ServiceInfoProvider(webAuthenticationUi));
+        }
+        /// <summary>
+        /// Creates a OneDrive client for use against OneDrive consumer.
+        /// </summary>
+        /// <param name="appId">The application ID for Microsoft Account authentication.</param>
+        /// <param name="returnUrl">The application return URL for Microsoft Account authentication.</param>
+        /// <param name="scopes">The requested scopes for Microsoft Account authentication.</param>
+        /// <param name="clientSecret">The client secret for Microsoft Account authentication.</param>
+        /// <param name="credentialCache">The cache instance for storing user credentials.</param>
+        /// <param name="httpProvider">The <see cref="IHttpProvider"/> for sending HTTP requests.</param>
         /// <param name="serviceInfoProvider">The <see cref="IServiceInfoProvider"/> for initializing the <see cref="IServiceInfo"/> for the session.</param>
         /// <returns>The <see cref="IOneDriveClient"/> for the session.</returns>
         public static IOneDriveClient GetMicrosoftAccountClient(
@@ -79,6 +108,7 @@ namespace Microsoft.OneDrive.Sdk
                 MicrosoftAccountAppId = appId,
                 MicrosoftAccountReturnUrl = returnUrl,
                 MicrosoftAccountScopes = scopes,
+                MicrosoftAccountClientSecret = clientSecret
             };
 
             return new OneDriveClient(appConfig, credentialCache, httpProvider, serviceInfoProvider);
